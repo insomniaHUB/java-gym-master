@@ -42,10 +42,10 @@ public class Timetable {
 
     public List<TrainingSession> getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
         //как реализовать, тоже непонятно, но сложность должна быть О(1)
-        if (timetable.getOrDefault(dayOfWeek, new TreeMap<>()).get(timeOfDay) == null) {
+        if (timetable.get(dayOfWeek) == null) {
             return new ArrayList<>();
         }
-        return timetable.get(dayOfWeek).get(timeOfDay);
+        return timetable.get(dayOfWeek).getOrDefault(timeOfDay, new ArrayList<>());
     }
 
     public List<CounterOfTrainings> getCountByCoaches() {
