@@ -8,21 +8,23 @@ public class Timetable {
 
     public void addNewTrainingSession(TrainingSession trainingSession) {
         //сохраняем занятие в расписании
-        if (!timetable.containsKey(trainingSession.getDayOfWeek())) {
-            TreeMap<TimeOfDay, ArrayList<TrainingSession>> trainingSessions = new TreeMap<>();
-            ArrayList<TrainingSession> trainingSessionList = new ArrayList<>();
-            trainingSessionList.add(trainingSession);
-            trainingSessions.put(trainingSession.getTimeOfDay(), trainingSessionList);
-            timetable.put(trainingSession.getDayOfWeek(), trainingSessions);
-        } else {
-            if (timetable.get(trainingSession.getDayOfWeek()).containsKey(trainingSession.getTimeOfDay())) {
-                timetable.get(trainingSession.getDayOfWeek()).get(trainingSession.getTimeOfDay()).add(trainingSession);
+        DayOfWeek dayOfWeek = trainingSession.getDayOfWeek();
+        TimeOfDay timeOfDay = trainingSession.getTimeOfDay();
+        if (timetable.containsKey(dayOfWeek)) {
+            if (timetable.get(dayOfWeek).containsKey(timeOfDay)) {
+                timetable.get(dayOfWeek).get(timeOfDay).add(trainingSession);
 
             } else {
                 ArrayList<TrainingSession> trainingSessionList = new ArrayList<>();
                 trainingSessionList.add(trainingSession);
-                timetable.get(trainingSession.getDayOfWeek()).put(trainingSession.getTimeOfDay(), trainingSessionList);
+                timetable.get(dayOfWeek).put(timeOfDay, trainingSessionList);
             }
+        } else {
+            TreeMap<TimeOfDay, ArrayList<TrainingSession>> trainingSessions = new TreeMap<>();
+            ArrayList<TrainingSession> trainingSessionList = new ArrayList<>();
+            trainingSessionList.add(trainingSession);
+            trainingSessions.put(timeOfDay, trainingSessionList);
+            timetable.put(dayOfWeek, trainingSessions);
         }
 
     }
