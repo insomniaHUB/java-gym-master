@@ -27,27 +27,26 @@ public class Timetable {
 
     }
 
-    public ArrayList<TrainingSession> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
+    public Map<TimeOfDay, List<TrainingSession>> getTrainingSessionsForDay(DayOfWeek dayOfWeek) {
         //как реализовать, тоже непонятно, но сложность должна быть О(1)
         if (timetable.get(dayOfWeek) == null) {
-            return new ArrayList<>();
+            return new TreeMap<>();
         }
-        ArrayList<TrainingSession> listOfTrainingSessions = new ArrayList<>();
-        for (TimeOfDay time : timetable.get(dayOfWeek).navigableKeySet()) {
-            listOfTrainingSessions.addAll(timetable.get(dayOfWeek).get(time));
-        }
+        Map<TimeOfDay, List<TrainingSession>> listOfTrainingSessions = new TreeMap<>();
+        listOfTrainingSessions.putAll(timetable.get(dayOfWeek));
+
         return listOfTrainingSessions;
     }
 
-    public ArrayList<TrainingSession> getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
+    public List<TrainingSession> getTrainingSessionsForDayAndTime(DayOfWeek dayOfWeek, TimeOfDay timeOfDay) {
         //как реализовать, тоже непонятно, но сложность должна быть О(1)
-        if (timetable.get(dayOfWeek).get(timeOfDay) == null) {
+        if (timetable.getOrDefault(dayOfWeek, new TreeMap<>()).get(timeOfDay) == null) {
             return new ArrayList<>();
         }
         return timetable.get(dayOfWeek).get(timeOfDay);
     }
 
-    public int getCountByCoaches(Coach neededCoach) {
+    public List<CounterOfTrainings> getCountByCoaches() {
         Map<Coach, Integer> countByCoach = new HashMap<>();
 
         for (DayOfWeek dayOfWeek : timetable.keySet()) {
@@ -66,12 +65,8 @@ public class Timetable {
 
         Collections.sort(counterOfTrainingsList);
 
-        for (CounterOfTrainings coach : counterOfTrainingsList) {
-            if (neededCoach.equals(coach.getCoach())) {
-                return coach.getCountOfTrainings();
-            }
-        }
-        return 0;
+
+        return counterOfTrainingsList;
     }
 
 }

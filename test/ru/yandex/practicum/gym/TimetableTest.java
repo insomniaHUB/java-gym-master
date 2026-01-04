@@ -51,10 +51,10 @@ public class TimetableTest {
         // Проверить, что за понедельник вернулось одно занятие
         Assertions.assertEquals(1, timetable.getTrainingSessionsForDay(DayOfWeek.MONDAY).size());
         // Проверить, что за четверг вернулось два занятия в правильном порядке: сначала в 13:00, потом в 20:00
-        Assertions.assertEquals(thursdayChildTrainingSession.getTimeOfDay(),
-                timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).get(0).getTimeOfDay());
-        Assertions.assertEquals(thursdayAdultTrainingSession.getTimeOfDay(),
-                timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).get(1).getTimeOfDay());
+        Assertions.assertEquals(thursdayChildTrainingSession,
+                timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).get(new TimeOfDay(13, 0)).get(0));
+        Assertions.assertEquals(thursdayAdultTrainingSession,
+                timetable.getTrainingSessionsForDay(DayOfWeek.THURSDAY).get(new TimeOfDay(20, 0)).get(0));
         // Проверить, что за вторник не вернулось занятий
         Assertions.assertEquals(0, timetable.getTrainingSessionsForDay(DayOfWeek.TUESDAY).size());
     }
@@ -111,8 +111,8 @@ public class TimetableTest {
         timetable.addNewTrainingSession(singleTrainingSession3);
         timetable.addNewTrainingSession(singleTrainingSession4);
 
-        Assertions.assertEquals(3, timetable.getCountByCoaches(coach));
-        Assertions.assertEquals(1, timetable.getCountByCoaches(coach1));
-        Assertions.assertEquals(0, timetable.getCountByCoaches(coach2));
+        Assertions.assertEquals(coach, timetable.getCountByCoaches().get(0).getCoach());
+        Assertions.assertEquals(coach1, timetable.getCountByCoaches().get(1).getCoach());
+        Assertions.assertEquals(2, timetable.getCountByCoaches().size());
     }
 }
